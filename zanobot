@@ -1,0 +1,37 @@
+import discord
+import random
+import string
+
+from pass_gen_func import pass_gen
+from settings import settings
+from eglence_logic import *
+
+# ayricaliklar (intents) değişkeni botun ayrıcalıklarını depolayacak
+intents = discord.Intents.default()
+# Mesajları okuma ayrıcalığını etkinleştirelim
+intents.message_content = True
+# client (istemci) değişkeniyle bir bot oluşturalım ve ayrıcalıkları ona aktaralım
+client = discord.Client(intents=intents)
+
+@client.event
+async def on_ready():
+    print(f'We have logged in as {client.user}')
+
+@client.event
+async def on_message(message):
+    if message.author == client.user:
+        return
+    if message.content.startswith('$merhaba'):
+        await message.channel.send("Kaliteye hoş geldiniz...")
+    elif message.content.startswith('$bye'):
+        await message.channel.send("\U0001f642")
+    elif message.content.startswith('$spotify'):
+        await message.channel.send("https://open.spotify.com/playlist/2iBNDKyTDyV5o5YdvQ9MOy?si=bc4403ea7db54904")
+    elif message.content.startswith('$parola'):
+        await message.channel.send("**10 Haneli Parolanız:** `"+pass_gen(10)+"`")
+    elif message.content.startswith('$yazıtura'):
+        await message.channel.send(yazitura())
+    elif message.content.startswith('$emoji'):
+        await message.channel.send(randomemoji())
+    else:
+        await message.channel.send(message.content)
